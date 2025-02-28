@@ -1,0 +1,35 @@
+
+import React, { useState } from "react";
+import axios from "axios";
+import './App.css';
+
+function App() {
+    const [carbonFootprint, setCarbonFootprint] = useState(0);
+    const [activity, setActivity] = useState("");
+
+    const calculateFootprint = async () => {
+        const response = await axios.post("http://localhost:8000/api/calculate/", { activity });
+        setCarbonFootprint(response.data.carbonFootprint);
+    };
+
+    return (
+        <div className="App">
+            <h1>GreenPath - Climate Action Tracker</h1>
+            <div className="calculator">
+                <input 
+                    type="text" 
+                    placeholder="Enter activity (e.g., 10km car ride)" 
+                    value={activity} 
+                    onChange={(e) => setActivity(e.target.value)} 
+                />
+                <button onClick={calculateFootprint}>Calculate Footprint</button>
+            </div>
+            <div className="result">
+                <h2>Your Carbon Footprint: {carbonFootprint} kg CO₂</h2>
+            </div>
+        </div>
+    );
+}
+
+export default App;
+            
